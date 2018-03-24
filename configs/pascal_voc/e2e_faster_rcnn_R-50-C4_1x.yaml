@@ -1,0 +1,34 @@
+MODEL:
+  TYPE: generalized_rcnn
+  CONV_BODY: VGG16.add_VGG16_conv5_body
+  NUM_CLASSES: 21
+  FASTER_RCNN: True
+NUM_GPUS: 1
+SOLVER:
+  WEIGHT_DECAY: 0.0005
+  LR_POLICY: steps_with_decay
+  BASE_LR: 0.001
+  GAMMA: 0.1
+  # 1x schedule (note TRAIN.IMS_PER_BATCH: 1)
+  MAX_ITER: 25000
+  STEPS: [0, 35000]
+RPN:
+  SIZES: (128, 256, 512)
+FAST_RCNN:
+  ROI_BOX_HEAD: VGG16.add_VGG16_roi_fc_head
+  ROI_XFORM_METHOD: RoIPoolF
+TRAIN:
+  WEIGHTS: VGG16.pkl
+  DATASETS: ('voc_2007_trainval','voc_2012_trainval')
+  SCALES: (400,500,600,700)
+  MAX_SIZE: 1000
+  IMS_PER_BATCH: 2
+  BATCH_SIZE_PER_IM: 128
+TEST:
+  DATASETS: ('voc_2007_test',)
+  SCALES: (600,)
+  MAX_SIZE: 1000
+  NMS: 0.3
+  RPN_PRE_NMS_TOP_N: 6000
+  RPN_POST_NMS_TOP_N: 300
+OUTPUT_DIR: .
