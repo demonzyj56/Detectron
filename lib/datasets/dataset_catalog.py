@@ -185,5 +185,29 @@ DATASETS = {
             _DATA_DIR + '/VOC2012/annotations/voc_2012_trainval.json',
         DEVKIT_DIR:
             _DATA_DIR + '/VOC2012/VOCdevkit2012'
-    }
+    },
+    'DET_train_30classes': {
+        IM_DIR:
+            _DATA_DIR + '/ILSVRC/Data/DET',
+        ANN_FN:
+            _DATA_DIR + '/ILSVRC/ImageSets/DET_train_30classes.json'
+    },
+    'VID_train_15frames': {
+        IM_DIR:
+            _DATA_DIR + '/ILSVRC/Data/VID',
+        ANN_FN:
+            _DATA_DIR + '/ILSVRC/ImageSets/VID_train_15frames.json'
+    },
+    'VID_train_frames': {
+        IM_DIR:
+            _DATA_DIR + '/ILSVRC/Data/VID',
+        ANN_FN:
+            _DATA_DIR + '/ILSVRC/ImageSets/VID_train_frames.json'
+    },
+    'VID_val_frames': {
+        IM_DIR:
+            _DATA_DIR + '/ILSVRC/Data/VID',
+        ANN_FN:
+            _DATA_DIR + '/ILSVRC/ImageSets/VID_val_frames.json'
+    },
 }
