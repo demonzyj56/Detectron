@@ -36,6 +36,7 @@ from core.config import cfg
 import roi_data.fast_rcnn
 import roi_data.retinanet
 import roi_data.rpn
+import roi_data.ssd
 import utils.blob as blob_utils
 
 logger = logging.getLogger(__name__)
@@ -53,6 +54,10 @@ def get_minibatch_blob_names(is_training=True):
         blob_names += roi_data.retinanet.get_retinanet_blob_names(
             is_training=is_training
         )
+    elif cfg.SSD.SSD_ON:
+        blob_names += roi_data.ssd.get_ssd_blob_names(
+            is_training=is_training
+        )
     else:
         # Fast R-CNN like models trained on precomputed proposals
         blob_names += roi_data.fast_rcnn.get_fast_rcnn_blob_names(
@@ -67,8 +72,11 @@ def get_minibatch(roidb):
     # single tensor, hence we initialize each blob to an empty list
     blobs = {k: [] for k in get_minibatch_blob_names()}
     # Get the input image blob, formatted for caffe2
-    im_blob, im_scales = _get_image_blob(roidb)
-    blobs['data'] = im_blob
+    if not cfg.SSD.SSD_ON:
+        # For SSD, we postpone loading images which should be augmented
+        # together with gt_classes and gt_boxes.
+        im_blob, im_scales = _get_image_blob(roidb)
+        blobs['data'] = im_blob
     if cfg.RPN.RPN_ON:
         # RPN-only or end-to-end Faster/Mask R-CNN
         valid = roi_data.rpn.add_rpn_blobs(blobs, im_scales, roidb)
@@ -80,6 +88,8 @@ def get_minibatch(roidb):
         valid = roi_data.retinanet.add_retinanet_blobs(
             blobs, im_scales, roidb, im_width, im_height
         )
+    elif cfg.SSD.SSD_ON:
+        valid = roi_data.ssd.add_and_proprecess_ssd_blobs(blobs, roidb)
     else:
         # Fast R-CNN like models trained on precomputed proposals
         valid = roi_data.fast_rcnn.add_fast_rcnn_blobs(blobs, im_scales, roidb)

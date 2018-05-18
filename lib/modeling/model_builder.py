@@ -53,6 +53,7 @@ import modeling.optimizer as optim
 import modeling.retinanet_heads as retinanet_heads
 import modeling.rfcn_heads as rfcn_heads
 import modeling.rpn_heads as rpn_heads
+import modeling.ssd_heads as ssd_heads
 import roi_data.minibatch
 import utils.c2 as c2_utils
 
@@ -98,6 +99,10 @@ def rfcn(model):
 def retinanet(model):
     # TODO(rbg): fold into build_generic_detection_model
     return build_generic_retinanet_model(model, get_func(cfg.MODEL.CONV_BODY))
+
+
+def ssd(model):
+    return build_generic_ssd_model(model, get_func(cfg.MODEL.CONV_BODY))
 
 
 # ---------------------------------------------------------------------------- #
@@ -355,6 +360,20 @@ def build_generic_retinanet_model(
             loss_gradients = retinanet_heads.add_fpn_retinanet_losses(
                 model
             )
+        return loss_gradients if model.train else None
+
+    optim.build_data_parallel_model(model, _single_gpu_build_func)
+    return model
+
+
+def build_generic_ssd_model(model, add_conv_body_func):
+    def _single_gpu_build_func(model):
+        blob, dim, spatial_scales = add_conv_body_func(model)
+        if not model.train:
+            model.conv_body_net = model.net.Clone('conv_body_net')
+        ssd_heads.add_ssd_outputs(model, blob, dim)
+        if model.train:
+            loss_gradients = ssd_heads.add_ssd_losses(model)
         return loss_gradients if model.train else None
 
     optim.build_data_parallel_model(model, _single_gpu_build_func)

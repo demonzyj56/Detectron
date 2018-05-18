@@ -847,6 +847,44 @@ __C.RFCN.PS_GRID_SIZE = 3
 
 
 # ---------------------------------------------------------------------------- #
+# SSD options
+# ---------------------------------------------------------------------------- #
+__C.SSD = AttrDict()
+
+# Whether to train single shot multibox detector.
+__C.SSD.SSD_ON = False
+
+# Height and width for input images.  Available sizes are 320/512 for now.
+__C.SSD.MIN_DIM = 320
+
+# Min and max ratio for anchor generation.  In digits between [0, 1].
+__C.SSD.MIN_RATIO = 0.15
+__C.SSD.MAX_RATIO = 0.9
+
+# Negative - positive ratios for hard negative mining.
+__C.SSD.NEG_POS_RATIO = 3
+
+# Augmentations
+# Expand factor controls maximum expansion (padding) before cropping.
+__C.SSD.EXPAND_FACTOR = 4
+
+# Crop factor controls what kind of cropping should be applied, with equal
+# probability.  Should be a tuple with (min_overlap, max_overlap).
+# Refer to utils.augmentations.RandomSampleCrop.
+__C.SSD.CROP_FACTOR = (
+    # the entire image
+    None,
+    # min overlap of 0.1, 0.3, 0.7, 0.9, and no max overlap
+    (0.1, None),
+    (0.3, None),
+    (0.5, None),
+    (0.7, None),
+    (0.9, None),
+    # randomly sample a patch
+    (None, None)
+)
+
+# ---------------------------------------------------------------------------- #
 # ResNets options ("ResNets" = ResNet and ResNeXt)
 # ---------------------------------------------------------------------------- #
 __C.RESNETS = AttrDict()
