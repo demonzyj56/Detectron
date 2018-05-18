@@ -8,7 +8,7 @@ from __future__ import unicode_literals
 import collections
 import numpy as np
 
-from core.config import cfg
+from detectron.core.config import cfg
 
 
 SsdLevelInfo = collections.namedtuple(

@@ -11,13 +11,13 @@ import numpy as np
 import numpy.random as npr
 import cv2
 
-from core.config import cfg
-import core.ssd_factory as ssd_factory
-from modeling.generate_anchors import generate_anchors
-import roi_data.data_utils as data_utils
-import utils.blob as blob_utils
-import utils.boxes as box_utils
-from utils.augmentations import Augmentations
+from detectron.core.config import cfg
+import detectron.core.ssd_factory as ssd_factory
+from detectron.modeling.generate_anchors import generate_anchors
+import detectron.roi_data.data_utils as data_utils
+import detectron.utils.blob as blob_utils
+import detectron.utils.boxes as box_utils
+from detectron.utils.augmentations import Augmentations
 
 logger = logging.getLogger(__name__)
 

@@ -7,12 +7,12 @@ from __future__ import unicode_literals
 
 import numpy as np
 
-from core.config import cfg
-import core.ssd_factory as ssd_factory
-from ops.multibox_cls_weights import MultiBoxClsWeightOp
-from utils.c2 import const_fill
-from utils.c2 import gauss_fill
-import utils.blob as blob_utils
+from detectron.core.config import cfg
+import detectron.core.ssd_factory as ssd_factory
+from detectron.ops.multibox_cls_weights import MultiBoxClsWeightOp
+from detectron.utils.c2 import const_fill
+from detectron.utils.c2 import gauss_fill
+import detectron.utils.blob as blob_utils
 
 
 def add_ssd320_extra_layers(model, blob_in, dim_in, dim_mid=128, dim_out=256):
