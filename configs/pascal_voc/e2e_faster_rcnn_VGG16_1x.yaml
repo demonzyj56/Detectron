@@ -24,7 +24,7 @@ FAST_RCNN:
 TRAIN:
   BG_THRESH_HI: 0.5
   BG_THRESH_LO: 0.0  
-  WEIGHTS: models/VGG16.pkl
+  WEIGHTS: ~/.detectron_models/VGG16.pkl
   DATASETS: ('voc_2007_trainval','voc_2012_trainval')
   SCALES: (400, 500, 600, 700)
   MAX_SIZE: 1000
